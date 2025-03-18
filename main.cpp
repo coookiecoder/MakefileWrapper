@@ -1,7 +1,15 @@
+#include <csignal>
+#include <cstdlib>
+
 #include <ncurses.h>
 
 void handle_main_menu();
 void display_menu(WINDOW *menu_win, int highlight, const char *choices[]);
+
+void close_window(int code) {
+    endwin();
+    exit(0);
+}
 
 int main() {
     initscr();            // Start ncurses mode
@@ -15,6 +23,8 @@ int main() {
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
 
     wbkgd(stdscr, COLOR_PAIR(1));
+
+    signal(SIGINT, close_window);
 
     handle_main_menu();
 
