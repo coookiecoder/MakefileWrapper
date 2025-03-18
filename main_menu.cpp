@@ -15,7 +15,7 @@ void handle_main_menu() {
     int rows, cols;
     getmaxyx(stdscr, rows, cols);
 
-    WINDOW *menu_win = newwin(rows - 4, cols - 4, 2, 2);
+    WINDOW *menu_win = newwin(rows - 2, cols - 2, 1, 1);
     box(menu_win, 0, 0);
 
     while (true) {
