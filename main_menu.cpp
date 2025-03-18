@@ -14,7 +14,10 @@ int execute_command(WINDOW *command_win, const char *command) {
     const int rows = getmaxy(command_win);
     const int cols = getmaxx(command_win);
 
-    FILE *fp = popen(command, "r");
+    std::string command_buffer(command);
+    command_buffer += " 2>&1";
+
+    FILE *fp = popen(command_buffer.c_str(), "r");
     if (fp == nullptr)
         return 1;
 
@@ -107,15 +110,15 @@ void handle_main_menu() {
 
             case 10:
                 if (highlight == 0) {
-                    return_code = execute_command(command_win,"make &");
+                    return_code = execute_command(command_win,"make");
                 } else if (highlight == 1) {
-                    return_code = execute_command(command_win,"make all &");
+                    return_code = execute_command(command_win,"make all");
                 } else if (highlight == 2) {
-                    return_code = execute_command(command_win,"make clean &");
+                    return_code = execute_command(command_win,"make clean");
                 } else if (highlight == 3) {
-                    return_code = execute_command(command_win,"make fclean &");
+                    return_code = execute_command(command_win,"make fclean");
                 } else if (highlight == 4) {
-                    return_code = execute_command(command_win,"make re &");
+                    return_code = execute_command(command_win,"make re");
                 } else if (highlight == 5) {
                     char input_buffer[256];
                     std::string input_buffer_string;
@@ -126,11 +129,9 @@ void handle_main_menu() {
                     noecho();
                     wrefresh(menu_win);
                     input_buffer_string = input_buffer;
-                    input_buffer_string += " &";
                     return_code = execute_command(command_win,input_buffer_string.c_str());
                     getch();
-                }
-                if (return_code) {
+                } if (return_code) {
                     init_pair(2, COLOR_WHITE, COLOR_RED);
                 } else {
                     init_pair(2, COLOR_WHITE, COLOR_GREEN);
